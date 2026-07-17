@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexa | ビジネスの推進力を、確かな設計と実行力で。</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Noto Sans JP', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark:        '#080C14',
+                            deeper:      '#050810',
+                            card:        '#0F1624',
+                            border:      '#1A2540',
+                            accent:      '#10B981',
+                            accentLight: '#34D399',
+                            primary:     '#3B82F6',
+                            primaryLight:'#60A5FA',
+                            muted:       '#64748B',
+                            mutedLight:  '#94A3B8',
+                        }
+                    },
+                    keyframes: {
+                        'fade-up': {
+                            '0%':   { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        'fade-in': {
+                            '0%':   { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        'pulse-slow': {
+                            '0%, 100%': { opacity: '0.4' },
+                            '50%':      { opacity: '0.8' },
+                        },
+                        'spin-slow': {
+                            '0%':   { transform: 'rotate(0deg)' },
+                            '100%': { transform: 'rotate(360deg)' },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%':      { transform: 'translateY(-12px)' },
+                        },
+                    },
+                    animation: {
+                        'fade-up':    'fade-up 0.7s ease-out forwards',
+                        'fade-in':    'fade-in 0.6s ease-out forwards',
+                        'pulse-slow': 'pulse-slow 4s ease-in-out infinite',
+                        'spin-slow':  'spin-slow 20s linear infinite',
+                        'float':      'float 6s ease-in-out infinite',
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* ========================================
+           ベーススタイル
+        ======================================== */
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            background-color: #080C14;
+            overflow-x: hidden;
+        }
+
+        /* ノイズテクスチャオーバーレイ */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        /* ========================================
+           グラスパネル
+        ======================================== */
+        .glass {
+            background: rgba(15, 22, 36, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .glass-light {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        /* ========================================
+           グラデーションボーダーカード
+        ======================================== */
+        .card-gradient-border {
+            position: relative;
+            background: rgba(15, 22, 36, 0.7);
+            border-radius: 1rem;
+        }
+        .card-gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(59,130,246,0.3), rgba(16,185,129,0.15), rgba(255,255,255,0.04));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .card-gradient-border:hover::before {
+            background: linear-gradient(135deg, rgba(59,130,246,0.6), rgba(16,185,129,0.4), rgba(255,255,255,0.08));
+        }
+
+        /* ========================================
+           グロウエフェクト
+        ======================================== */
+        .glow-blue  { box-shadow: 0 0 40px rgba(59,130,246,0.15); }
+        .glow-green { box-shadow: 0 0 40px rgba(16,185,129,0.15); }
+        .glow-blue:hover  { box-shadow: 0 0 60px rgba(59,130,246,0.3); }
+        .glow-green:hover { box-shadow: 0 0 60px rgba(16,185,129,0.3); }
+
+        /* ========================================
+           スクロールアニメーション
+        ======================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* ========================================
+           ナビゲーション
+        ======================================== */
+        .nav-link {
+            position: relative;
+            color: #64748B;
+            transition: color 0.25s;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, #3B82F6, #10B981);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover { color: #fff; }
+        .nav-link:hover::after { width: 100%; }
+
+        /* ========================================
+           ヒーローグラデーションテキスト
+        ======================================== */
+        .text-gradient-blue {
+            background: linear-gradient(135deg, #60A5FA 0%, #3B82F6 50%, #818CF8 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-green {
+            background: linear-gradient(135deg, #10B981 0%, #34D399 60%, #6EE7B7 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-white {
+            background: linear-gradient(135deg, #fff 0%, #CBD5E1 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ========================================
+           ボタン
+        ======================================== */
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #3B82F6, #10B981);
+            color: #fff;
+            font-weight: 700;
+            border-radius: 0.75rem;
+            padding: 1rem 2rem;
+            transition: transform 0.25s, box-shadow 0.25s;
+            box-shadow: 0 4px 24px rgba(59,130,246,0.25);
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #2563EB, #059669);
+            opacity: 0;
+            transition: opacity 0.25s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(16,185,129,0.3); }
+        .btn-primary:hover::before { opacity: 1; }
+        .btn-primary span { position: relative; z-index: 1; }
+
+        .btn-ghost {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            font-weight: 600;
+            border-radius: 0.75rem;
+            padding: 1rem 2rem;
+            transition: background 0.25s, border-color 0.25s, transform 0.25s;
+        }
+        .btn-ghost:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        /* ========================================
+           セクション区切り線
+        ======================================== */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+        }
+
+        /* ========================================
+           モバイルメニュー
+        ======================================== */
+        #mobile-menu {
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        #mobile-menu.open {
+            max-height: 400px;
+            opacity: 1;
+        }
+
+        /* ========================================
+           タグバッジ
+        ======================================== */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16,185,129,0.08);
+            border: 1px solid rgba(16,185,129,0.2);
+            color: #34D399;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            padding: 0.4rem 1rem;
+            border-radius: 9999px;
+        }
+
+        /* ========================================
+           ステップライン
+        ======================================== */
+        .step-line {
+            background: linear-gradient(to bottom, #3B82F6, #10B981, #34D399);
+        }
+
+        /* ========================================
+           概要テーブル行
+        ======================================== */
+        .profile-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            padding: 1.75rem 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            gap: 0.5rem;
+            transition: background 0.2s;
+        }
+        .profile-row:last-child { border-bottom: none; }
+        .profile-row:hover { background: rgba(255,255,255,0.02); }
+
+        @media (min-width: 768px) {
+            .profile-row {
+                grid-template-columns: 200px 1fr;
+                gap: 0;
+                align-items: center;
+            }
+        }
+
+        /* ========================================
+           SVGアニメーション
+        ======================================== */
+        .svg-path-anim {
+            stroke-dasharray: 600;
+            stroke-dashoffset: 600;
+            animation: draw-path 2.5s ease forwards 0.5s;
+        }
+        @keyframes draw-path {
+            to { stroke-dashoffset: 0; }
+        }
+
+        /* ========================================
+           スクロールバー
+        ======================================== */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #080C14; }
+        ::-webkit-scrollbar-thumb { background: #1A2540; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3B82F6; }
+    </style>
+</head>
+
+<body class="text-slate-100 font-sans antialiased selection:bg-brand-accent/30 selection:text-white">
+
+    <!-- ========================================
+         背景エフェクト
+    ======================================== -->
+    <div aria-hidden="true" class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <!-- メイングロウ -->
+        <div class="absolute -top-40 left-1/4 w-[700px] h-[700px] bg-brand-primary/8 rounded-full blur-[140px] animate-pulse-slow"></div>
+        <div class="absolute top-1/2 -right-20 w-[500px] h-[500px] bg-brand-accent/6 rounded-full blur-[120px] animate-pulse-slow" style="animation-delay:2s"></div>
+        <div class="absolute bottom-0 left-1/3 w-[600px] h-[600px] bg-brand-primary/6 rounded-full blur-[160px] animate-pulse-slow" style="animation-delay:4s"></div>
+        <!-- グリッドライン -->
+        <svg class="absolute inset-0 w-full h-full opacity-[0.025]" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <pattern id="bg-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+                    <path d="M 60 0 L 0 0 0 60" fill="none" stroke="white" stroke-width="0.5"/>
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#bg-grid)"/>
+        </svg>
+    </div>
+
+    <!-- ========================================
+         ヘッダーナビゲーション
+    ======================================== -->
+    <header id="header" class="fixed top-0 left-0 w-full z-50 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-center justify-between h-20">
+
+                <!-- ロゴ -->
+                <a href="#" class="flex items-center gap-3 group" aria-label="Nexa ホームへ">
+                    <div class="relative w-10 h-10">
+                        <div class="absolute inset-0 rounded-xl bg-gradient-to-tr from-brand-primary to-brand-accent opacity-80 group-hover:opacity-100 transition-opacity duration-300 shadow-lg shadow-brand-primary/30"></div>
+                        <div class="absolute inset-0 rounded-xl flex items-center justify-center">
+                            <span class="text-white font-black text-lg tracking-wider relative z-10">N</span>
+                        </div>
+                    </div>
+                    <span class="text-xl font-black tracking-[0.2em] text-gradient-white">NEXA</span>
+                </a>
+
+                <!-- デスクトップナビ -->
+                <nav class="hidden md:flex items-center gap-10" aria-label="メインナビゲーション">
+                    <a href="#concept"   class="nav-link">CONCEPT</a>
+                    <a href="#services"  class="nav-link">SERVICES</a>
+                    <a href="#strengths" class="nav-link">STRENGTHS</a>
+                    <a href="#overview"  class="nav-link">OVERVIEW</a>
+                </nav>
+
+                <!-- CTAボタン（デスクトップ） -->
+                <a href="#overview" class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white/5 border border-white/10 text-xs font-semibold text-white tracking-wider hover:bg-white/10 hover:border-white/20 transition-all duration-300">
+                    <svg class="w-3.5 h-3.5 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    事業概要
+                </a>
+
+                <!-- モバイルメニューボタン -->
+                <button id="menu-btn" class="md:hidden p-2 text-brand-muted hover:text-white transition-colors" aria-label="メニューを開く" aria-expanded="false">
+                    <svg id="icon-open"  class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    <svg id="icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- モバイルメニュー -->
+        <div id="mobile-menu" class="md:hidden glass border-t border-white/5">
+            <nav class="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-1">
+                <a href="#concept"   class="mobile-nav-link px-4 py-3 rounded-lg text-sm font-semibold text-brand-mutedLight hover:text-white hover:bg-white/5 transition-all duration-200 tracking-wider">CONCEPT</a>
+                <a href="#services"  class="mobile-nav-link px-4 py-3 rounded-lg text-sm font-semibold text-brand-mutedLight hover:text-white hover:bg-white/5 transition-all duration-200 tracking-wider">SERVICES</a>
+                <a href="#strengths" class="mobile-nav-link px-4 py-3 rounded-lg text-sm font-semibold text-brand-mutedLight hover:text-white hover:bg-white/5 transition-all duration-200 tracking-wider">STRENGTHS</a>
+                <a href="#overview"  class="mobile-nav-link px-4 py-3 rounded-lg text-sm font-semibold text-brand-mutedLight hover:text-white hover:bg-white/5 transition-all duration-200 tracking-wider">OVERVIEW</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+    <!-- ========================================
+         ヒーローセクション
+    ======================================== -->
+    <section class="relative min-h-screen flex items-center pt-20 pb-16 overflow-hidden">
+
+        <div class="max-w-7xl mx-auto px-6 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+
+                <!-- キャッチコピーエリア -->
+                <div class="lg:col-span-7 space-y-8 relative z-10">
+
+                    <!-- バッジ -->
+                    <div class="badge reveal">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-accent"></span>
+                        </span>
+                        BUSINESS ARCHITECT &amp; SUPPORT
+                    </div>
+
+                    <!-- メインコピー -->
+                    <h1 class="text-[2.6rem] sm:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-black tracking-tight leading-[1.12] reveal reveal-delay-1">
+                        <span class="text-white block">ビジネスの推進力を、</span>
+                        <span class="block mt-1">
+                            <span class="text-gradient-blue">確かな設計</span>
+                            <span class="text-white">と</span>
+                            <span class="text-gradient-green">実行力</span>
+                            <span class="text-white">で</span>
+                        </span>
+                    </h1>
+
+                    <!-- サブコピー -->
+                    <p class="text-base md:text-lg text-brand-mutedLight leading-[1.9] max-w-xl reveal reveal-delay-2">
+                        Nexaは、ITプロジェクトの円滑な進行管理、戦略的な提案資料の作成、そしてバックオフィス業務の仕組み化を通じて、企業や個人事業主の事業拡大を力強くバックアップするパートナーです。
+                    </p>
+
+                    <!-- CTAボタン -->
+                    <div class="flex flex-wrap gap-4 pt-2 reveal reveal-delay-3">
+                        <a href="#services" class="btn-primary">
+                            <span>提供サービスを見る</span>
+                        </a>
+                        <a href="#concept" class="btn-ghost">
+                            Nexaについて
+                        </a>
+                    </div>
+
+                    <!-- スタッツ -->
+                    <div class="flex flex-wrap gap-8 pt-4 reveal reveal-delay-4">
+                        <div>
+                            <p class="text-2xl font-black text-white">3<span class="text-brand-accent">+</span></p>
+                            <p class="text-xs text-brand-muted mt-0.5 tracking-wider">コア事業領域</p>
+                        </div>
+                        <div class="w-px bg-white/10 self-stretch"></div>
+                        <div>
+                            <p class="text-2xl font-black text-white">100<span class="text-brand-accent">%</span></p>
+                            <p class="text-xs text-brand-muted mt-0.5 tracking-wider">オンライン対応</p>
+                        </div>
+                        <div class="w-px bg-white/10 self-stretch"></div>
+                        <div>
+                            <p class="text-2xl font-black text-white">1<span class="text-brand-accent">on</span>1</p>
+                            <p class="text-xs text-brand-muted mt-0.5 tracking-wider">専任サポート</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右側：抽象グラフィック -->
+                <div class="lg:col-span-5 flex justify-center items-center reveal reveal-delay-2">
+                    <div class="relative w-full max-w-[400px] aspect-square">
+
+                        <!-- 外周グロウ -->
+                        <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-brand-primary/15 to-brand-accent/15 blur-2xl animate-pulse-slow"></div>
+
+                        <!-- SVGグラフィック -->
+                        <svg viewBox="0 0 400 400" class="w-full h-full relative z-10 animate-float" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <pattern id="hero-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                                </pattern>
+                                <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%"   stop-color="#3B82F6"/>
+                                    <stop offset="50%"  stop-color="#10B981"/>
+                                    <stop offset="100%" stop-color="#6EE7B7"/>
+                                </linearGradient>
+                                <linearGradient id="circleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%"   stop-color="#3B82F6" stop-opacity="0.4"/>
+                                    <stop offset="100%" stop-color="#10B981" stop-opacity="0.1"/>
+                                </linearGradient>
+                                <filter id="glow">
+                                    <feGaussianBlur stdDeviation="3" result="blur"/>
+                                    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                                </filter>
+                            </defs>
+
+                            <!-- 背景 -->
+                            <rect width="400" height="400" fill="url(#hero-grid)" rx="28"/>
+                            <rect width="400" height="400" fill="url(#circleGrad)" rx="28"/>
+
+                            <!-- 外円 -->
+                            <circle cx="200" cy="200" r="155" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1.5"/>
+                            <!-- 内円（破線） -->
+                            <circle cx="200" cy="200" r="100" fill="none" stroke="rgba(59,130,246,0.2)" stroke-dasharray="6 5" stroke-width="1.5"/>
+                            <!-- 最内円 -->
+                            <circle cx="200" cy="200" r="48" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.15)" stroke-width="1"/>
+
+                            <!-- 十字軸 -->
+                            <line x1="200" y1="30" x2="200" y2="370" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                            <line x1="30"  y1="200" x2="370" y2="200" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+
+                            <!-- データウェーブ -->
+                            <path class="svg-path-anim" d="M 50 290 C 120 190, 155 320, 230 165 C 295 55, 310 185, 350 125" fill="none" stroke="url(#lineGrad)" stroke-width="3.5" stroke-linecap="round" filter="url(#glow)"/>
+
+                            <!-- ノード -->
+                            <circle cx="230" cy="165" r="9"  fill="#10B981" filter="url(#glow)"/>
+                            <circle cx="230" cy="165" r="18" fill="none" stroke="#10B981" stroke-width="1.5" opacity="0.4"/>
+                            <circle cx="230" cy="165" r="27" fill="none" stroke="#10B981" stroke-width="0.8" opacity="0.15"/>
+
+                            <circle cx="125" cy="235" r="6"  fill="#3B82F6" filter="url(#glow)"/>
+                            <circle cx="125" cy="235" r="13" fill="none" stroke="#3B82F6" stroke-width="1" opacity="0.3"/>
+
+                            <circle cx="310" cy="110" r="10" fill="#34D399" filter="url(#glow)"/>
+                            <circle cx="310" cy="110" r="20" fill="none" stroke="#34D399" stroke-width="1.5" opacity="0.25"/>
+
+                            <!-- ガントバー -->
+                            <rect x="72"  y="76"  width="96" height="14" rx="7" fill="#0F1624" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                            <rect x="75"  y="79"  width="62" height="8"  rx="4" fill="#3B82F6" opacity="0.8"/>
+
+                            <rect x="218" y="305" width="112" height="14" rx="7" fill="#0F1624" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                            <rect x="221" y="308" width="88"  height="8"  rx="4" fill="#10B981" opacity="0.8"/>
+
+                            <!-- 中央ロゴマーク -->
+                            <circle cx="200" cy="200" r="26" fill="rgba(15,22,36,0.9)" stroke="rgba(59,130,246,0.3)" stroke-width="1.5"/>
+                            <text x="200" y="206" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="18" font-weight="900" fill="white" letter-spacing="2">N</text>
+                        </svg>
+
+                        <!-- 右下のラベル -->
+                        <div class="absolute bottom-4 right-0 glass px-3 py-2 rounded-lg text-xs text-brand-mutedLight">
+                            <span class="text-brand-accent font-bold">●</span> Live Project Tracking
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- スクロールインジケーター -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
+            <span class="text-[10px] tracking-widest text-brand-muted uppercase">Scroll</span>
+            <div class="w-px h-10 bg-gradient-to-b from-brand-muted to-transparent"></div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         コンセプトセクション
+    ======================================== -->
+    <section id="concept" class="py-28 relative">
+        <div class="section-divider mb-0"></div>
+        <div class="max-w-7xl mx-auto px-6 pt-28">
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+
+                <!-- 左：テキスト -->
+                <div class="lg:col-span-6 space-y-7 reveal">
+                    <span class="text-[0.65rem] font-black tracking-[0.2em] text-brand-accent uppercase block">— CONCEPT</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-white tracking-tight leading-[1.25]">
+                        「想い」と「実務」をつなぎ、<br>
+                        事業スピードを最大化する。
+                    </h2>
+                    <div class="w-12 h-0.5 bg-gradient-to-r from-brand-primary to-brand-accent rounded-full"></div>
+                    <p class="text-brand-mutedLight leading-[1.9] text-sm md:text-base">
+                        素晴らしいビジョンやビジネスアイデアがあっても、それを形にする「計画の設計」「日々の事務オペレーション」「説得力ある提案資料」が不足していれば、本来の価値は十分に発揮されません。
+                    </p>
+                    <p class="text-brand-mutedLight leading-[1.9] text-sm md:text-base">
+                        Nexaは、ITプロジェクトの企画から、現場の事務作業、そして経営を支えるバックオフィス構築まで、多角的な実務経験を活かして、あらゆる「滞り」を解消。お客様がコア業務に100%集中できる環境を創出します。
+                    </p>
+                </div>
+
+                <!-- 右：コンセプトカードグリッド -->
+                <div class="lg:col-span-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                    <!-- カード1 -->
+                    <div class="card-gradient-border p-7 hover:-translate-y-1.5 transition-all duration-300 glow-blue reveal reveal-delay-1">
+                        <div class="w-11 h-11 rounded-xl bg-brand-primary/10 flex items-center justify-center mb-5 border border-brand-primary/20">
+                            <svg class="w-5 h-5 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-2">一気通貫のサポート</h3>
+                        <p class="text-xs text-brand-muted leading-relaxed">
+                            戦略立案（上流）から、日常の実務・事務（下流）まで、ズレのない高品質な推進体制をワンストップでご提供。
+                        </p>
+                    </div>
+
+                    <!-- カード2 -->
+                    <div class="card-gradient-border p-7 hover:-translate-y-1.5 transition-all duration-300 glow-green reveal reveal-delay-2">
+                        <div class="w-11 h-11 rounded-xl bg-brand-accent/10 flex items-center justify-center mb-5 border border-brand-accent/20">
+                            <svg class="w-5 h-5 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-2">圧倒的な機動力</h3>
+                        <p class="text-xs text-brand-muted leading-relaxed">
+                            個人事業主ならではのスピード感と柔軟性で、突発的なタスクの発生や状況変化にも的確に対応します。
+                        </p>
+                    </div>
+
+                    <!-- カード3（横幅いっぱい） -->
+                    <div class="card-gradient-border p-7 md:col-span-2 hover:-translate-y-1.5 transition-all duration-300 reveal reveal-delay-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-5">
+                            <div class="w-11 h-11 shrink-0 rounded-xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+                                <svg class="w-5 h-5 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-base font-bold text-white mb-1.5">プロフェッショナルな品質保証</h3>
+                                <p class="text-xs text-brand-muted leading-relaxed">
+                                    多数のITプロジェクトや企業間折衝を経験したノウハウを活かし、細部まで配慮の行き届いた成果物をご提供します。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         サービス内容セクション
+    ======================================== -->
+    <section id="services" class="py-28 relative">
+        <div class="section-divider mb-0"></div>
+        <div class="max-w-7xl mx-auto px-6 pt-28">
+
+            <!-- セクションヘッダー -->
+            <div class="text-center max-w-2xl mx-auto mb-20 space-y-4 reveal">
+                <span class="text-[0.65rem] font-black tracking-[0.2em] text-brand-accent uppercase block">— WHAT WE DO</span>
+                <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">事業内容</h2>
+                <div class="w-12 h-0.5 bg-gradient-to-r from-brand-primary to-brand-accent rounded-full mx-auto"></div>
+                <p class="text-brand-muted text-sm md:text-base leading-relaxed">
+                    Nexaは、ビジネスの効率化とプロジェクトの成功率向上に貢献する、<br>3つのコア事業を展開しています。
+                </p>
+            </div>
+
+            <!-- サービスカードグリッド -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                <!-- Service 01 -->
+                <div class="card-gradient-border p-8 flex flex-col gap-6 hover:-translate-y-2 transition-all duration-300 group glow-blue reveal reveal-delay-1">
+                    <div class="flex justify-between items-start">
+                        <div class="w-14 h-14 rounded-2xl bg-brand-primary/10 border border-brand-primary/20 flex items-center justify-center group-hover:bg-brand-primary/20 transition-colors duration-300">
+                            <svg class="w-7 h-7 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                        </div>
+                        <span class="text-5xl font-black text-white/[0.04] font-mono select-none">01</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white tracking-tight mb-2">ITプロジェクトの企画・管理</h3>
+                        <p class="text-sm text-brand-muted leading-relaxed">
+                            IT新規事業やシステム開発プロジェクトの、企画立案・要件整理・全体ロードマップの策定、さらに進行体制の構築を行います。
+                        </p>
+                    </div>
+                    <ul class="space-y-2.5 text-xs text-brand-muted border-t border-white/5 pt-5 mt-auto">
+                        <li class="flex items-center gap-2.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-primary shrink-0"></span>
+                            プロジェクト憲章・要件定義支援
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-primary shrink-0"></span>
+                            WBS（タスク分解）の策定
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-primary shrink-0"></span>
+                            課題抽出・リスクコントロール
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Service 02 -->
+                <div class="card-gradient-border p-8 flex flex-col gap-6 hover:-translate-y-2 transition-all duration-300 group glow-green reveal reveal-delay-2">
+                    <div class="flex justify-between items-start">
+                        <div class="w-14 h-14 rounded-2xl bg-brand-accent/10 border border-brand-accent/20 flex items-center justify-center group-hover:bg-brand-accent/20 transition-colors duration-300">
+                            <svg class="w-7 h-7 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.58 1.104 4.5 2.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                        </div>
+                        <span class="text-5xl font-black text-white/[0.04] font-mono select-none">02</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white tracking-tight mb-2">各種事務・バックオフィス支援</h3>
+                        <p class="text-sm text-brand-muted leading-relaxed">
+                            ルーティンワークの仕組み化から、契約・請求管理、データ整理などの各種バックオフィス業務を巻き取り、業務効率を最適化します。
+                        </p>
+                    </div>
+                    <ul class="space-y-2.5 text-xs text-brand-muted border-t border-white/5 pt-5 mt-auto">
+                        <li class="flex items-center gap-2.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-accent shrink-0"></span>
+                            経理事務・請求管理などのサポート
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-accent shrink-0"></span>
+                            マニュアル作成・業務プロセスの可視化
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-accent shrink-0"></span>
+                            顧客・問い合わせ対応のアシスト
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Service 03 -->
+                <div class="card-gradient-border p-8 flex flex-col gap-6 hover:-translate-y-2 transition-all duration-300 group reveal reveal-delay-3">
+                    <div class="flex justify-between items-start">
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors duration-300">
+                            <svg class="w-7 h-7 text-brand-accentLight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                        </div>
+                        <span class="text-5xl font-black text-white/[0.04] font-mono select-none">03</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white tracking-tight mb-2">提案資料作成・進捗管理</h3>
+                        <p class="text-sm text-brand-muted leading-relaxed">
+                            営業活動や稟議のためのロジカルで視覚的に洗練された資料作成。そして関係各社・メンバーの進捗管理を一手に引き受けます。
+                        </p>
+                    </div>
+                    <ul class="space-y-2.5 text-xs text-brand-muted border-t border-white/5 pt-5 mt-auto">
+                        <li class="flex items-center gap-2.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-accentLight shrink-0"></span>
+                            PowerPoint等によるロジカルな提案書作成
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-accentLight shrink-0"></span>
+                            社内外コミュニケーションハブ・進捗モニタリング
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-accentLight shrink-0"></span>
+                            ミーティング進行・議事録・ネクストアクション追跡
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         強みセクション
+    ======================================== -->
+    <section id="strengths" class="py-28 relative">
+        <div class="section-divider mb-0"></div>
+        <div class="max-w-7xl mx-auto px-6 pt-28">
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+
+                <!-- 左：課題解決フロー -->
+                <div class="lg:col-span-6 order-2 lg:order-1 reveal">
+                    <div class="card-gradient-border p-8 rounded-2xl relative overflow-hidden">
+                        <!-- 背景グロウ -->
+                        <div class="absolute top-0 right-0 w-48 h-48 bg-brand-accent/8 rounded-full blur-3xl pointer-events-none"></div>
+                        <div class="absolute bottom-0 left-0 w-32 h-32 bg-brand-primary/8 rounded-full blur-2xl pointer-events-none"></div>
+
+                        <h4 class="text-sm font-bold text-white mb-8 tracking-wider uppercase">解決できる課題・価値</h4>
+
+                        <div class="space-y-7 relative">
+                            <!-- 縦ライン -->
+                            <div class="absolute left-[22px] top-4 bottom-4 w-0.5 step-line rounded-full"></div>
+
+                            <!-- ステップ1 -->
+                            <div class="flex items-start gap-5 relative z-10">
+                                <div class="w-11 h-11 shrink-0 rounded-full bg-brand-card border-2 border-brand-primary flex items-center justify-center text-xs font-black text-brand-primary shadow-lg shadow-brand-primary/20">
+                                    01
+                                </div>
+                                <div class="pt-1">
+                                    <h5 class="text-sm font-bold text-white mb-1">コア業務へのリソース集中</h5>
+                                    <p class="text-xs text-brand-muted leading-relaxed">
+                                        プロジェクトマネジメントと事務作業の大部分をアウトソースすることで、最も付加価値の高い経営判断や営業に集中可能。
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- ステップ2 -->
+                            <div class="flex items-start gap-5 relative z-10">
+                                <div class="w-11 h-11 shrink-0 rounded-full bg-brand-card border-2 border-brand-accent flex items-center justify-center text-xs font-black text-brand-accent shadow-lg shadow-brand-accent/20">
+                                    02
+                                </div>
+                                <div class="pt-1">
+                                    <h5 class="text-sm font-bold text-white mb-1">コミュニケーションコストの激減</h5>
+                                    <p class="text-xs text-brand-muted leading-relaxed">
+                                        「言わずとも伝わる」ビジネス理解力と、構造化された進捗レポートにより、状況確認や指示出しの手間を最小化。
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- ステップ3 -->
+                            <div class="flex items-start gap-5 relative z-10">
+                                <div class="w-11 h-11 shrink-0 rounded-full bg-brand-card border-2 border-emerald-400 flex items-center justify-center text-xs font-black text-emerald-400 shadow-lg shadow-emerald-400/20">
+                                    03
+                                </div>
+                                <div class="pt-1">
+                                    <h5 class="text-sm font-bold text-white mb-1">顧客満足度の向上と契約獲得率アップ</h5>
+                                    <p class="text-xs text-brand-muted leading-relaxed">
+                                        緻密な進行体制と視覚的に分かりやすい提案書により、対外的な信頼感を一気に引き上げます。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右：強みテキスト -->
+                <div class="lg:col-span-6 space-y-8 order-1 lg:order-2 reveal reveal-delay-1">
+                    <span class="text-[0.65rem] font-black tracking-[0.2em] text-brand-accent uppercase block">— OUR STRENGTHS</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-white tracking-tight leading-[1.25]">
+                        実務を徹底的に知るからこそ<br>
+                        提供できる「3つの強み」
+                    </h2>
+                    <div class="w-12 h-0.5 bg-gradient-to-r from-brand-primary to-brand-accent rounded-full"></div>
+
+                    <div class="space-y-6">
+
+                        <!-- 強み1 -->
+                        <div class="flex items-start gap-4 p-5 rounded-xl bg-white/[0.02] border border-white/5 hover:border-brand-primary/20 transition-colors duration-300">
+                            <div class="p-2 bg-brand-primary/10 rounded-lg text-brand-primary mt-0.5 shrink-0 border border-brand-primary/20">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white mb-1">ITから実務まで横断する総合支援</h4>
+                                <p class="text-xs text-brand-muted leading-relaxed">
+                                    エンジニアやデザイナーとのテックなやり取りから、現場の細かな事務作業まで、両方のレイヤーをスムーズに橋渡しできる希少な知見を保有。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 強み2 -->
+                        <div class="flex items-start gap-4 p-5 rounded-xl bg-white/[0.02] border border-white/5 hover:border-brand-accent/20 transition-colors duration-300">
+                            <div class="p-2 bg-brand-accent/10 rounded-lg text-brand-accent mt-0.5 shrink-0 border border-brand-accent/20">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white mb-1">ロジックとビジュアルの両立</h4>
+                                <p class="text-xs text-brand-muted leading-relaxed">
+                                    「美しいだけ」「文字だらけ」ではない、相手の意思決定を促す論理構成と美しいビジュアルを備えた「勝てる提案資料」を作成。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 強み3 -->
+                        <div class="flex items-start gap-4 p-5 rounded-xl bg-white/[0.02] border border-white/5 hover:border-emerald-500/20 transition-colors duration-300">
+                            <div class="p-2 bg-emerald-500/10 rounded-lg text-brand-accentLight mt-0.5 shrink-0 border border-emerald-500/20">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white mb-1">柔軟かつ安定したパートナーシップ</h4>
+                                <p class="text-xs text-brand-muted leading-relaxed">
+                                    単なるアウトソーシングではなく、貴社チームの一員として、目的共有を行いながら主体的に進捗をドライブさせます。
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         事業概要セクション
+    ======================================== -->
+    <section id="overview" class="py-28 relative">
+        <div class="section-divider mb-0"></div>
+        <div class="max-w-4xl mx-auto px-6 pt-28">
+
+            <!-- セクションヘッダー -->
+            <div class="text-center mb-16 space-y-4 reveal">
+                <span class="text-[0.65rem] font-black tracking-[0.2em] text-brand-accent uppercase block">— OFFICE PROFILE</span>
+                <h2 class="text-3xl md:text-4xl font-black text-white tracking-tight">事業概要</h2>
+                <div class="w-12 h-0.5 bg-gradient-to-r from-brand-primary to-brand-accent rounded-full mx-auto"></div>
+            </div>
+
+            <!-- プロフィールテーブル -->
+            <div class="card-gradient-border rounded-2xl overflow-hidden reveal reveal-delay-1">
+
+                <div class="profile-row">
+                    <div class="text-xs font-black text-brand-accent tracking-[0.15em] uppercase">屋号</div>
+                    <div class="text-base text-white font-semibold">Nexa</div>
+                </div>
+
+                <div class="profile-row">
+                    <div class="text-xs font-black text-brand-accent tracking-[0.15em] uppercase">代表者</div>
+                    <div class="text-base text-white font-semibold">野口 歌星（Noguchi Kasei）</div>
+                </div>
+
+                <div class="profile-row items-start">
+                    <div class="text-xs font-black text-brand-accent tracking-[0.15em] uppercase pt-0.5">事業内容</div>
+                    <div class="space-y-2">
+                        <p class="flex items-start gap-2.5 text-sm text-slate-300">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-primary shrink-0 mt-1.5"></span>
+                            ITプロジェクトの企画・管理業務
+                        </p>
+                        <p class="flex items-start gap-2.5 text-sm text-slate-300">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-primary shrink-0 mt-1.5"></span>
+                            各種事務業務およびバックオフィス支援
+                        </p>
+                        <p class="flex items-start gap-2.5 text-sm text-slate-300">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-primary shrink-0 mt-1.5"></span>
+                            提案資料作成および進捗管理業務
+                        </p>
+                    </div>
+                </div>
+
+                <div class="profile-row">
+                    <div class="text-xs font-black text-brand-accent tracking-[0.15em] uppercase">所在地</div>
+                    <div class="text-sm text-slate-300">〒136-0071　東京都江東区亀戸</div>
+                </div>
+
+            </div>
+
+            <!-- ロケーション情報 -->
+            <div class="mt-6 card-gradient-border p-5 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 reveal reveal-delay-2">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-brand-accent/10 border border-brand-accent/20 flex items-center justify-center text-brand-accent shrink-0">
+                        <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-brand-muted block tracking-wider uppercase mb-0.5">Office Location</span>
+                        <span class="text-sm font-semibold text-white">東京都江東区亀戸エリアを中心に、オンラインにて全国対応可能</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-brand-accent/10 border border-brand-accent/20 text-xs font-semibold text-brand-accent whitespace-nowrap">
+                    <span class="w-1.5 h-1.5 rounded-full bg-brand-accent animate-pulse"></span>
+                    オンライン対応中
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    </main>
+
+    <!-- ========================================
+         フッター
+    ======================================== -->
+    <footer class="relative border-t border-white/5 py-14 mt-8">
+        <div class="absolute inset-0 bg-brand-deeper/80 pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+
+                <!-- ロゴ -->
+                <a href="#" class="flex items-center gap-3 group" aria-label="Nexa ホームへ">
+                    <div class="relative w-9 h-9">
+                        <div class="absolute inset-0 rounded-lg bg-gradient-to-tr from-brand-primary to-brand-accent opacity-80 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute inset-0 rounded-lg flex items-center justify-center">
+                            <span class="text-white font-black text-sm tracking-wider">N</span>
+                        </div>
+                    </div>
+                    <span class="text-base font-black tracking-[0.2em] text-gradient-white">NEXA</span>
+                </a>
+
+                <!-- フッターナビ -->
+                <nav class="flex flex-wrap justify-center gap-6 text-xs font-semibold text-brand-muted tracking-wider">
+                    <a href="#concept"   class="hover:text-white transition-colors duration-200">CONCEPT</a>
+                    <a href="#services"  class="hover:text-white transition-colors duration-200">SERVICES</a>
+                    <a href="#strengths" class="hover:text-white transition-colors duration-200">STRENGTHS</a>
+                    <a href="#overview"  class="hover:text-white transition-colors duration-200">OVERVIEW</a>
+                </nav>
+
+                <!-- コピーライト -->
+                <p class="text-[11px] text-brand-muted text-center md:text-right leading-relaxed">
+                    &copy; 2026 Nexa. All rights reserved.<br>
+                    <span class="text-brand-muted/60">Registered in Koto-ku, Tokyo.</span>
+                </p>
+
+            </div>
+
+            <!-- ボトムライン -->
+            <div class="mt-10 pt-6 border-t border-white/[0.04] flex justify-center">
+                <p class="text-[10px] text-brand-muted/40 tracking-widest uppercase">
+                    Business Architect &amp; Support — Nexa
+                </p>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- ========================================
+         JavaScript
+    ======================================== -->
+    <script>
+        // ----------------------------------------
+        // スクロールアニメーション（Intersection Observer）
+        // ----------------------------------------
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+        );
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // ----------------------------------------
+        // ヘッダースクロール連動
+        // ----------------------------------------
+        const header = document.getElementById('header');
+        let lastScrollY = 0;
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+
+            if (scrollY > 60) {
+                header.classList.add('glass', 'border-b', 'border-white/5', 'shadow-xl', 'shadow-black/20');
+            } else {
+                header.classList.remove('glass', 'border-b', 'border-white/5', 'shadow-xl', 'shadow-black/20');
+            }
+
+            // スクロールダウンで非表示、アップで表示
+            if (scrollY > lastScrollY && scrollY > 200) {
+                header.style.transform = 'translateY(-100%)';
+            } else {
+                header.style.transform = 'translateY(0)';
+            }
+            lastScrollY = scrollY;
+        }, { passive: true });
+
+        // ----------------------------------------
+        // モバイルメニュー開閉
+        // ----------------------------------------
+        const menuBtn   = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const iconOpen  = document.getElementById('icon-open');
+        const iconClose = document.getElementById('icon-close');
+
+        menuBtn.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.toggle('open');
+            iconOpen.classList.toggle('hidden', isOpen);
+            iconClose.classList.toggle('hidden', !isOpen);
+            menuBtn.setAttribute('aria-expanded', isOpen.toString());
+        });
+
+        // モバイルメニューのリンクをクリックしたら閉じる
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                iconOpen.classList.remove('hidden');
+                iconClose.classList.add('hidden');
+                menuBtn.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // ----------------------------------------
+        // ヒーローセクションの初期アニメーション
+        // ----------------------------------------
+        window.addEventListener('DOMContentLoaded', () => {
+            // ヒーローの reveal 要素を即時表示
+            const heroReveals = document.querySelectorAll('.reveal');
+            heroReveals.forEach((el, i) => {
+                setTimeout(() => {
+                    el.classList.add('visible');
+                }, i * 100);
+            });
+        });
+    </script>
+
+</body>
+</html>
